@@ -1,21 +1,20 @@
 
 # Apache Kafka for Developers using Spring Boot
 
-* <https://www.udemy.com/share/102AWn3@n0xeHuuw9iPcv5iCP_b5hMtJ0rOgWV52hXvUWE67xD3VKldTSW4mhGhMEF8Zkeg=/>
-* <https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot>
+* [Course link](https://www.udemy.com/share/102AWn3@n0xeHuuw9iPcv5iCP_b5hMtJ0rOgWV52hXvUWE67xD3VKldTSW4mhGhMEF8Zkeg=/)
+* [Course code](https://github.com/dilipsundarraj1/kafka-for-developers-using-spring-boot)
 
 ## Running Kafka locally
 
-* Kafka may be configured through binaries or docker images
-  * binaries: <https://kafka.apache.org/quickstart>
-  * img docker: <https://github.com/confluentinc/cp-docker-images>
+* Kafka may be configured through [binaries](https://kafka.apache.org/quickstart) or [docker images](https://github.com/confluentinc/cp-docker-images)
 * In this course binaries options is used (follow instructions in above quick start link)
 * Use a folder without spaces in name (to avoid kafka start up errors)
 * Download and extract binaries
 * Edit /config/server.properties file:
     ```
     listeners=PLAINTEXT://localhost:9092
-    auto.create.topics.enable=false ## this parameters blocks Kafka of create a topic that doesn't exists when a message is produced
+    ## this parameters blocks Kafka of create a topic that doesn't exists when a message is produced
+    auto.create.topics.enable=false
     ```
 * Start zookeeper:
     ```
@@ -49,10 +48,10 @@
 
 * Message Order
   * Kafka guarantee order of message delivery only at partition level
-  * By default Kafka broker distributes produced messagens through all partitions, and consumer polls messages from all partitions (to improve performance)
-  * If order of messages is required, then this messages must be sended to the same partition
-  * This could be done by setting a key / value to messages
-  * All messages with the same key value are persisted in the same partition (when the first message arrives the kafka broker algorithm determines wich partition must be used)
+  * By default Kafka broker distributes produced messages through all partitions, and consumer polls messages from all partitions (to improve performance)
+  * If message delivery order is required, then these messages must be send to the same partition
+  * This could be achieved by setting a key / value to messages
+  * All messages with the same key / value are persisted in the same partition (when the first message arrives the kafka broker algorithm determines wich partition will be used)
   * To send a message with key:
     ```
     bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test-topic --property "key.separator=-" --property "parse.key=true"
