@@ -1,2 +1,2 @@
 /kafka*
-*.pdf
+/kafka-docker*
