@@ -38,3 +38,7 @@
     docker-compose up -d
     docker-compose stop
     ```
+## Projects developed in course
+
+* Producer - library-events-producer
+* Consumer - ??
