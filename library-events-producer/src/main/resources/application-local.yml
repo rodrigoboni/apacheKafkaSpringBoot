@@ -1,0 +1,7 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+    admin: # in local / dev environment this config is used to create topics by code (AutoCreateConfig class)
+      properties:
+        bootstrap.servers: localhost:9092

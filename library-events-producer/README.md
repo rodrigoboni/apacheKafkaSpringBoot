@@ -11,7 +11,7 @@
 curl --location --request POST 'http://localhost:8080/v1/libraryevent' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "libraryEventId": 1,
+    "libraryEventId": null,
     "book": {
         "bookId": 1,
         "bookName": "era uma vez",

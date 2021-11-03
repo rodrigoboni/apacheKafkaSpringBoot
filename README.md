@@ -7,37 +7,29 @@
 
 ## Running Kafka locally
 
-* Kafka may be configured through [binaries](https://kafka.apache.org/quickstart) or [docker images](https://github.com/wurstmeister/kafka-docker)
-* Using binaries for local kafka spin up:
-  * Use a folder without spaces in name (to avoid kafka start up errors)
-  * Download and extract binaries
-  * Edit /config/server.properties file:
-      ```
-      listeners=PLAINTEXT://localhost:9092
-      ## this parameters blocks Kafka of create a topic that doesn't exists when a message is produced
-      auto.create.topics.enable=false
-      ```
+* https://lankydan.dev/running-kafka-locally-with-docker
+* https://hub.docker.com/r/bitnami/kafka/
+* https://github.com/bitnami/bitnami-docker-kafka
 
-  * Start zookeeper:
-      ```
-      bin/zookeeper-server-start.sh config/zookeeper.properties
-      ```
+```
+# start cluster
+cd kafka
+docker-compose up -d
 
-  * Start broker:
-      ```
-      bin/kafka-server-start.sh config/server.properties
-      ```
+# stop cluster
+docker-compose stop
 
-* Using docker compose
-  * clone git repository <https://github.com/wurstmeister/kafka-docker>
-  * edit docker-compose.yml file and:
-    * set KAFKA_ADVERTISED_HOST_NAME with your current IP
-    * set auto create topics with var env in docker-compose.yml: KAFKA_CREATE_TOPICS: "topic1:1:1" (topic1 with 1 partition and 1 replica for instance)
-  * start / stop kafka:
-    ```
-    docker-compose up -d
-    docker-compose stop
-    ```
+# create a topic
+docker exec -it kafka_kafka_1 kafka-topics.sh --create --bootstrap-server kafka:9092 --topic my-topic --partitions 2 --replication-factor 1
+
+# list avaiable topics
+docker exec -it kafka_kafka_1 kafka-topics.sh --bootstrap-server kafka:9092 --list
+
+# Produce and consume messages (run in separated terminal session)
+docker exec -it kafka_kafka_1 kafka-console-producer.sh --bootstrap-server kafka:9092 --topic my-topic
+docker exec -it kafka_kafka_1 kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic my-topic --from-beginning
+```
+
 ## Projects developed in course
 
 * Producer - library-events-producer
