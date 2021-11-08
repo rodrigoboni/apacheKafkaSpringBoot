@@ -1,4 +1,4 @@
-package com.learnkafka.libraryeventsproducer.domain;
+package com.learnkafka.controller.domain;
 
 public enum LibraryEventType {
     NEW,

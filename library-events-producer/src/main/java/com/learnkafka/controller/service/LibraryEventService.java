@@ -1,9 +1,9 @@
-package com.learnkafka.libraryeventsproducer.service;
+package com.learnkafka.controller.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.learnkafka.libraryeventsproducer.domain.LibraryEvent;
-import com.learnkafka.libraryeventsproducer.domain.LibraryEventType;
-import com.learnkafka.libraryeventsproducer.producer.LibraryEventProducer;
+import com.learnkafka.controller.domain.LibraryEvent;
+import com.learnkafka.controller.domain.LibraryEventType;
+import com.learnkafka.controller.producer.LibraryEventProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
-package com.learnkafka.libraryeventsproducer.producer;
+package com.learnkafka.controller.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.learnkafka.libraryeventsproducer.domain.LibraryEvent;
+import com.learnkafka.controller.domain.LibraryEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
