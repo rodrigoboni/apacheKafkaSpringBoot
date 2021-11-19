@@ -1,7 +1,7 @@
 spring:
   kafka:
     template:
-      default-topic: library-events # default topic for use with producer template
+      default-topic: library-events # default topic for use with producer template with sendDefault method
     producer:
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer

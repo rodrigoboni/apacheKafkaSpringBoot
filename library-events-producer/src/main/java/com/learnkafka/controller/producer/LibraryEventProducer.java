@@ -36,6 +36,12 @@ public class LibraryEventProducer {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * This method uses a most used way to send messages, setting details such as headers, topic etc
+     * See comments on code below and related methods in this class for more detail
+     * @param libraryEvent
+     * @throws JsonProcessingException
+     */
     public void sendProducerRecordLibraryEvent(LibraryEvent libraryEvent) throws JsonProcessingException {
         if(libraryEvent.getLibraryEventId() == null) {
             libraryEvent.setLibraryEventId(Math.abs(new Random().nextInt()));
@@ -64,7 +70,7 @@ public class LibraryEventProducer {
      * @param topicName
      * @return
      */
-    private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topicName, List<Header> recordHeaders) {
+    private ProducerRecord<Integer, String>  buildProducerRecord(Integer key, String value, String topicName, List<Header> recordHeaders) {
         return new ProducerRecord<Integer, String>(topicName,null, key, value, recordHeaders);
     }
 
