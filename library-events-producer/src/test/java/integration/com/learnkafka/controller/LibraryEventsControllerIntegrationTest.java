@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // WebEnvironment property can adjust some configuration in the spring context spin up
 // in this case the http port used by tomcat is set to a random port, instead of default 8080
-// this way we can avoid conflicts when running tests with default http port
+// this way conflicts are avoided when running tests with default http port
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 
 // tests must be independent, so this way we can't depend on a real kafka cluster to run tests
@@ -36,8 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // this annotation is provided by spring-kafka dependency
 @EmbeddedKafka(topics = {"${topic.name}"}, partitions = 3)
 
-// the embedded kafka sets this own properties when it starts (in org.springframework.kafka.test.EmbeddedKafkaBroker.SPRING_EMBEDDED_KAFKA_BROKERS)
-// with SpringBootTest.WebEnvironment.RANDOM_PORT in @SpringBootTest the port used is different each time testing env starts
+// the embedded kafka sets this own properties values when it starts (in org.springframework.kafka.test.EmbeddedKafkaBroker.SPRING_EMBEDDED_KAFKA_BROKERS)
 // due to this it's required to override the kafka bootstrap-server settings defined in application.yml file
 // this is done using this annotation, setting the bootstrap-server property with the correct value read on embedded kafka instance
 @TestPropertySource(properties = {"spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}",
@@ -58,8 +57,8 @@ public class LibraryEventsControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         // consumer configuration with group id, auto commit and embbeded kafka broker instance
-        // using KafkaTestUtils to easier configuration in test environment
-        // in this case "true" is passed by string due to configuration building
+        // using KafkaTestUtils for easier configuration in test environment
+        // in this case "true" is passed as string due to configuration building
         Map<String, Object> configs = new HashMap<>(KafkaTestUtils.consumerProps("group1", "true", embeddedKafkaBroker));
         // gets a default consumer instance for embedded producer, using configuration defined with embedded kafka
         consumer = new DefaultKafkaConsumerFactory<>(configs, new IntegerDeserializer(), new StringDeserializer()).createConsumer();

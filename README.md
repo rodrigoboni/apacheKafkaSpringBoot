@@ -29,8 +29,3 @@ docker exec -it kafka_kafka_1 kafka-topics.sh --bootstrap-server kafka:9092 --li
 docker exec -it kafka_kafka_1 kafka-console-producer.sh --bootstrap-server kafka:9092 --topic my-topic
 docker exec -it kafka_kafka_1 kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic my-topic --from-beginning
 ```
-
-## Projects developed in course
-
-* Producer - library-events-producer
-* Consumer - ??

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -24,25 +25,23 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class LibraryEventProducer {
 
-    private final KafkaTemplate<Integer, String> kafkaTemplate;
+    @Autowired
+    private KafkaTemplate<Integer, String> kafkaTemplate;
 
-    private final ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${topic.name}")
     private String topicName;
-
-    public LibraryEventProducer(KafkaTemplate<Integer, String> kafkaTemplate, ObjectMapper objectMapper) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.objectMapper = objectMapper;
-    }
 
     /**
      * This method uses a most used way to send messages, setting details such as headers, topic etc
      * See comments on code below and related methods in this class for more detail
      * @param libraryEvent
      * @throws JsonProcessingException
+     * @return
      */
-    public void sendProducerRecordLibraryEvent(LibraryEvent libraryEvent) throws JsonProcessingException {
+    public ListenableFuture<SendResult<Integer, String>> sendProducerRecordLibraryEvent(LibraryEvent libraryEvent) throws JsonProcessingException {
         if(libraryEvent.getLibraryEventId() == null) {
             libraryEvent.setLibraryEventId(Math.abs(new Random().nextInt()));
         }
@@ -61,6 +60,8 @@ public class LibraryEventProducer {
         ListenableFuture<SendResult<Integer, String>> sendResultListenableFuture = kafkaTemplate.send(producerRecord);
         // register a callback to be executed when the future completes
         sendResultListenableFuture.addCallback(getProducerCallback(key, value, sendResultListenableFuture));
+
+        return sendResultListenableFuture;
     }
 
     /**
@@ -147,6 +148,10 @@ public class LibraryEventProducer {
 
     private void handleFailure(Integer key, String value, Throwable ex) {
         log.error("Error sending message with key " + key.toString() + " and value " + value, ex);
-//        throw ex;
+        try {
+            throw ex;
+        } catch (Throwable e) {
+            log.error("Error in handleFailure: {}", e.getMessage());
+        }
     }
 }
