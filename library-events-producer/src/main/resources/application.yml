@@ -5,6 +5,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties: # get all config options in https://kafka.apache.org/documentation/
+        acks: all # guarantee that produced messages will be persisted in leader topic and all replicas (in logs acks = -1 for "all" value)
+        retries: 10 # number of retries to produce a message
 
 topic:
   name: library-events

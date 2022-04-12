@@ -45,6 +45,11 @@ public class LibraryEventProducer {
         if(libraryEvent.getLibraryEventId() == null) {
             libraryEvent.setLibraryEventId(Math.abs(new Random().nextInt()));
         }
+
+        // the key value is used by spring-kafka partition algorithm to choose the partition where message will be produced
+        // when message ordering is required the same key must be used
+        // messages with different key can be sent on different partitions
+        // (in Kafka ordering is guaranteed only at topic level)
         Integer key = libraryEvent.getLibraryEventId();
 
         // convert object to json string
@@ -91,6 +96,11 @@ public class LibraryEventProducer {
         if(libraryEvent.getLibraryEventId() == null) {
             libraryEvent.setLibraryEventId(Math.abs(new Random().nextInt()));
         }
+
+        // the key value is used by spring-kafka partition algorithm to choose the partition where message will be produced
+        // when message ordering is required the same key must be used
+        // messages with different key can be sent on different partitions
+        // (in Kafka ordering is guaranteed only at topic level)
         Integer key = libraryEvent.getLibraryEventId();
 
         // convert object to json string

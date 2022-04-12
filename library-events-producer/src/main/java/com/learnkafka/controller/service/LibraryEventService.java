@@ -16,8 +16,8 @@ public class LibraryEventService {
         this.libraryEventProducer = libraryEventProducer;
     }
 
-    public void sendNewLibraryEvent(LibraryEvent libraryEvent) throws JsonProcessingException {
-        libraryEvent.setLibraryEventType(LibraryEventType.NEW);
+    public void sendNewLibraryEvent(LibraryEvent libraryEvent, LibraryEventType libraryEventType) throws JsonProcessingException {
+        libraryEvent.setLibraryEventType(libraryEventType);
         libraryEventProducer.sendProducerRecordLibraryEvent(libraryEvent);
         log.info("New library event sent to topic: {}", libraryEvent);
     }

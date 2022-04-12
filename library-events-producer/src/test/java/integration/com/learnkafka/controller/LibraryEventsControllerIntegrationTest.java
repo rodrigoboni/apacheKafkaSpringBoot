@@ -109,4 +109,68 @@ public class LibraryEventsControllerIntegrationTest {
         // compare values and test it
         assertEquals(expected, readValue);
     }
+
+    @Test
+    @Timeout(5) // to wait for async method in message consuming
+    void putLibraryEvent() {
+        // given
+        Book book = Book.builder()
+                .bookId(123)
+                .bookAuthor("ze ruela")
+                .bookName("as aventuras do ze ruela")
+                .build();
+
+        LibraryEvent libraryEvent = LibraryEvent.builder()
+                .libraryEventId(1175604958)
+                .book(book)
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("content-type", MediaType.APPLICATION_JSON.toString());
+        HttpEntity<LibraryEvent> request = new HttpEntity<>(libraryEvent, headers);
+
+        // when
+        ResponseEntity<LibraryEvent> responseEntity = restTemplate.exchange("/v1/libraryevent", HttpMethod.PUT, request, LibraryEvent.class);
+
+        // then
+        // TODO must be checked, controller always return 201 status
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        // gets a single record form consumer and extract the message payload
+        // note this method is async
+        ConsumerRecord<Integer, String> singleRecord = KafkaTestUtils.getSingleRecord(consumer, topicName);
+        String readValue = singleRecord.value();
+
+        // expected json in string format with message payload
+        String expected = "{\"libraryEventId\":1175604958,\"libraryEventType\":\"UPDATE\",\"book\":{\"bookId\":123,\"bookName\":\"as aventuras do ze ruela\",\"bookAuthor\":\"ze ruela\"}}";
+
+        // compare values and test it
+        assertEquals(expected, readValue);
+    }
+
+    @Test
+    @Timeout(5) // to wait for async method in message consuming
+    void putInvalidLibraryEvent() {
+        // given
+        Book book = Book.builder()
+                .bookId(123)
+                .bookAuthor("ze ruela")
+                .bookName("as aventuras do ze ruela")
+                .build();
+
+        LibraryEvent libraryEvent = LibraryEvent.builder()
+                .book(book)
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("content-type", MediaType.APPLICATION_JSON.toString());
+        HttpEntity<LibraryEvent> request = new HttpEntity<>(libraryEvent, headers);
+
+        // when
+        ResponseEntity<?> responseEntity = restTemplate.exchange("/v1/libraryevent", HttpMethod.PUT, request, String.class);
+
+        // then
+        // TODO must be checked, controller always return 201 status
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+    }
 }

@@ -13,7 +13,21 @@ curl --location --request POST 'http://localhost:8080/v1/libraryevent' \
 --data-raw '{
     "libraryEventId": null,
     "book": {
-        "bookId": 1,
+        "bookId": 123,
+        "bookName": "era uma vez",
+        "bookAuthor": "zé ruela"
+    }
+}'
+```
+
+* put library event
+```
+curl --location --request PUT 'http://localhost:8080/v1/libraryevent' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "libraryEventId": 420555486,
+    "book": {
+        "bookId": 123,
         "bookName": "era uma vez",
         "bookAuthor": "zé ruela"
     }
